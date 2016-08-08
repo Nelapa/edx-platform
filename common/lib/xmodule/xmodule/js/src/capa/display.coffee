@@ -30,7 +30,7 @@ class @Problem
     @$('div.action button').click @refreshAnswers
     @questionTitle = @$('.problem-header')
     @reviewButton = @$('div.action .review-btn')
-    @reviewButton.click @review_question_click
+    @reviewButton.click @scroll_to_problem_meta
     @checkButton = @$('div.action button.check')
     @checkButtonLabel = @$('div.action button.check span.check-label')
     @checkButtonCheckText = @checkButtonLabel.text()
@@ -225,12 +225,12 @@ class @Problem
         flag = false
     return flag
 
-  # Review button click brings user back to top of problem
-  review_question_click: =>
+  # Scroll to problem metadata and next focus is problem input
+  scroll_to_problem_meta: =>
     $('html, body').animate({
       scrollTop: @questionTitle.offset().top
     }, 500);
-    @questionTitle.focus();
+    @questionTitle.focus()
 
   ###
   # 'check_fd' uses FormData to allow file submissions in the 'problem_check' dispatch,
@@ -401,25 +401,11 @@ class @Problem
           @el.find('.problem > div').each (index, element) =>
             MathJax.Hub.Queue ["Typeset", MathJax.Hub, element]
 
-        `// Translators: the word Answer here refers to the answer to a problem the student must solve.`
-        @$('.show-label').text gettext('Hide Answer')
         @el.addClass 'showed'
+        @el.find('.show').attr('disabled', 'disabled')
+        @scroll_to_problem_meta()
         @updateProgress response
         window.SR.readElts(answer_text)
-    else
-      @$('[id^=answer_], [id^=solution_]').text ''
-      @$('[correct_answer]').attr correct_answer: null
-      @el.removeClass 'showed'
-      `// Translators: the word Answer here refers to the answer to a problem the student must solve.`
-      @$('.show-label').text gettext('Show Answer')
-      window.SR.readText(gettext('Answer hidden'))
-
-      @el.find(".capa_inputtype").each (index, inputtype) =>
-        display = @inputtypeDisplays[$(inputtype).attr('id')]
-        classes = $(inputtype).attr('class').split(' ')
-        for cls in classes
-          hideMethod = @inputtypeHideAnswerMethods[cls]
-          hideMethod(inputtype, display) if hideMethod?
 
   gentle_alert: (msg) =>
     if @el.find('.capa_alert').length
