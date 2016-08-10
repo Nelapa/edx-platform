@@ -30,7 +30,7 @@ class @Problem
     @$('div.action button').click @refreshAnswers
     @questionTitle = @$('.problem-header')
     @reviewButton = @$('div.action .review-btn')
-    @reviewButton.click @review_question_click
+    @reviewButton.click @scroll_to_problem_meta
     @checkButton = @$('div.action button.check')
     @checkButtonLabel = @$('div.action button.check span.check-label')
     @checkButtonCheckText = @checkButtonLabel.text()
@@ -225,12 +225,12 @@ class @Problem
         flag = false
     return flag
 
-  # Review button click brings user back to top of problem
-  review_question_click: =>
+  # Scroll to problem metadata and next focus is problem input
+  scroll_to_problem_meta: =>
     $('html, body').animate({
       scrollTop: @questionTitle.offset().top
     }, 500);
-    @questionTitle.focus();
+    @questionTitle.focus()
 
   ###
   # 'check_fd' uses FormData to allow file submissions in the 'problem_check' dispatch,
@@ -348,9 +348,11 @@ class @Problem
   reset_internal: =>
     Logger.log 'problem_reset', @answers
     $.postWithPrefix "#{@url}/problem_reset", id: @id, (response) =>
-        @el.trigger('contentChanged', [@id, response.html])
-        @render(response.html)
-        @updateProgress response
+      @el.trigger('contentChanged', [@id, response.html])
+      @render(response.html)
+      @updateProgress response
+      @scroll_to_problem_meta()
+
 
   # TODO this needs modification to deal with javascript responses; perhaps we
   # need something where responsetypes can define their own behavior when show

@@ -809,3 +809,23 @@ class ProblemStateOnNavigationTest(UniqueCourseTest):
         self.go_to_tab_and_assert_problem(1, self.problem1_name)
         problem1_content_after_coming_back = self.problem_page.problem_content
         self.assertEqual(problem1_content_before_switch, problem1_content_after_coming_back)
+
+    def test_perform_problem_reset_and_focus(self):
+        """
+        Scenario:
+        I go to sequential position 1
+        Facing problem1, I select 'choice_1'
+        Then perform the action reset
+        Observe that the focus has shifted to the expected element
+        """
+        # Go to sequential position 1 and assert that we are on problem 1.
+        self.go_to_tab_and_assert_problem(1, self.problem1_name)
+
+        # Update problem 1's content state – by performing reset operation.
+        self.problem_page.click_choice('choice_choice_1')
+        self.problem_page.click_check()
+        self.problem_page.wait_for_expected_status('label.choicegroup_incorrect', 'incorrect')
+
+        # Reset and observe focus shift
+        self.problem_page.click_reset()
+        self.assertTrue(self.problem_page.is_focus_on_problem_meta())

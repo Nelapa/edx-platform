@@ -129,6 +129,12 @@ class ProblemPage(PageObject):
         self.q(css='div.problem button.reset').click()
         self.wait_for_ajax()
 
+    def is_focus_on_problem_meta(self):
+        """
+        Check for focus problem meta.
+        """
+        return self.q(css='.problem-header').focused
+
     def wait_for_status_icon(self):
         """
         wait for status icon
