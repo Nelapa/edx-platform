@@ -130,6 +130,8 @@ div.problem-progress {
 // +Problem - Base
 // ====================
 div.problem {
+  padding: ($baseline) 0 0 0 ;
+
   @media print {
     display: block;
     padding: 0;
