@@ -278,7 +278,12 @@
             groupEl
                 .append('title')
                 .attr('id', function(d) {
-                    return 'title_word_' + d.text;
+                    return HtmlUtils.interpolateHtml(
+                        gettext('title_word_{word}'),
+                        {
+                            word: d.text.replace(/\s/g, '_')
+                        }
+                    );
                 })
                 .text(function(d) {
                     var res = '';
@@ -297,7 +302,12 @@
             groupEl
                 .append('text')
                 .attr('id', function(d) {
-                    return 'text_word_' + d.text;
+                    return HtmlUtils.interpolateHtml(
+                        gettext('text_word_{word}'),
+                        {
+                            word: d.text.replace(/\s/g, '_')
+                        }
+                    );
                 })
                 .style('font-size', function(d) {
                     return d.size + 'px';

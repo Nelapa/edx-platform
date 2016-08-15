@@ -11,12 +11,14 @@
     % endif
 
     % if instructions is not instructions_default:
-    <div class="input_cloud_instructions" id="word_cloud_${element_id}_instructions">
-        ${instructions}
-    </div>
+    <div class="input_cloud_section" role="group" aria-labelledby="word_cloud_${element_id}_instructions">
+        <div class="input_cloud_instructions" id="word_cloud_${element_id}_instructions">
+            ${instructions}
+        </div>
+    % else:
+    <div class="input_cloud_section" role="group">
     % endif
 
-    <div class="input_cloud_section" role="group">
         % for row in range(num_inputs):
             <label for="word_cloud_${element_id}_input_${row}" class="sr">${row + 1}/${num_inputs}</label>
             <input
@@ -25,9 +27,6 @@
                 ${'style="display: none;"' if submitted else ''}
                 type="text"
                 size="40"
-                % if instructions is not instructions_default:
-                aria-describedby="word_cloud_${element_id}_instructions"
-                % endif
             />
         % endfor
 
@@ -38,8 +37,9 @@
 
     <div id="result_cloud_section_${element_id}" class="result_cloud_section">
         <div class="word_cloud"></div>
-        <p id="heading-words">${'Your'} <strong><span class="total_num_words"></span></strong> ${'words'}:</p>
-        <ul class="your_words" aria-describedby="heading-words"></ul>
+        <p>${'There are '} <strong><span class="total_num_words"></span></strong> ${'in total'}.</p>
+        <p>${'Your words were'}:</p>
+        <ul class="your_words"></ul>
     </div>
 
 </div>
